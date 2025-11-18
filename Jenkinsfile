@@ -1,8 +1,8 @@
+// Jenkinsfile: fail PR builds when gitleaks finds secrets
 pipeline {
   agent any
 
   options {
-    // keep last 10 builds, timestamps
     buildDiscarder(logRotator(numToKeepStr: '10'))
     timestamps()
   }
@@ -12,7 +12,7 @@ pipeline {
       steps {
         script {
           echo "BRANCH_NAME = ${env.BRANCH_NAME}"
-          echo "CHANGE_ID = ${env.CHANGE_ID}"
+          echo "CHANGE_ID   = ${env.CHANGE_ID}"
           echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
           echo "Is changeRequest (PR)? ${env.CHANGE_ID != null}"
         }
@@ -20,7 +20,6 @@ pipeline {
     }
 
     stage('Checkout') {
-      // Multibranch Pipeline will provide correct SCM (merge ref for PRs when available)
       steps {
         checkout scm
       }
@@ -29,6 +28,7 @@ pipeline {
     stage('Setup') {
       steps {
         sh '''
+          set -e
           python --version || true
           pip --version || true
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -36,14 +36,29 @@ pipeline {
       }
     }
 
-    stage('PR checks') {
+    stage('PR secret-scan and tests') {
       when { changeRequest() }
       steps {
-        echo "Running PR-specific checks (lint, fast tests)"
+        echo "Running secret-scan (gitleaks) and fast tests for PRs"
+
         sh '''
-          # run lint and fast unit tests for PRs
+          set -e
+
+          # Run gitleaks (exit non-zero if leaks found)
+          if command -v gitleaks >/dev/null 2>&1; then
+            echo "Running local gitleaks..."
+            gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 1
+          elif command -v docker >/dev/null 2>&1; then
+            echo "Running gitleaks via docker..."
+            docker run --rm -v "$PWD":/src zricethezav/gitleaks:8.8.3 detect --source /src --report-format json --report-path /src/gitleaks-report.json --exit-code 1
+          else
+            echo "ERROR: gitleaks binary or docker not available. Failing build to ensure secret-scanning is enforced."
+            exit 2
+          fi
+
+          # Fast tests - do not mask failures (will fail build if tests fail)
           if command -v pytest >/dev/null 2>&1; then
-            pytest -q || true
+            pytest -q
           fi
         '''
       }
@@ -54,9 +69,9 @@ pipeline {
       steps {
         echo "Running full build/publish for branches"
         sh '''
-          # full test suite, build, and publish only for non-PR branches
-          pytest -q || true
-          # package/publish commands go here (only for trusted branches)
+          set -e
+          pytest -q
+          # package/publish commands go here for trusted branches
         '''
       }
     }
@@ -66,9 +81,9 @@ pipeline {
     always {
       echo "Collecting test reports and artifacts"
       junit allowEmptyResults: true, testResults: 'reports/**/*.xml'
-      archiveArtifacts allowEmptyArchive: true, artifacts: '**/dist/**, **/*.whl'
+      archiveArtifacts allowEmptyArchive: true, artifacts: '**/dist/**, **/*.whl, gitleaks-report.json'
     }
     success { echo "Success" }
-    failure { echo "Failed" }
+    failure { echo "Failed (check console and gitleaks-report.json)" }
   }
 }
