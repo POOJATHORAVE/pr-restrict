@@ -1,4 +1,5 @@
-// Jenkinsfile: fail PR builds when gitleaks finds secrets
+// Jenkinsfile: Fail PR builds when gitleaks finds secrets (Docker agent + runtime gitleaks install)
+
 pipeline {
   agent any
 
@@ -44,7 +45,6 @@ pipeline {
         sh '''
           set -e
 
-          # Run gitleaks (exit non-zero if leaks found)
           if command -v gitleaks >/dev/null 2>&1; then
             echo "Running local gitleaks..."
             gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 1
@@ -56,7 +56,6 @@ pipeline {
             exit 2
           fi
 
-          # Fast tests - do not mask failures (will fail build if tests fail)
           if command -v pytest >/dev/null 2>&1; then
             pytest -q
           fi
@@ -71,7 +70,7 @@ pipeline {
         sh '''
           set -e
           pytest -q
-          # package/publish commands go here for trusted branches
+          # package/publish commands go here
         '''
       }
     }
@@ -87,7 +86,7 @@ pipeline {
     failure { echo "Failed (check console and gitleaks-report.json)" }
   }
 }
-Jenkinsfile: echo "Fail PR builds when gitleaks finds secrets (Docker agent + runtime gitleaks install)"
+
 
 // pipeline {
 //   agent {
