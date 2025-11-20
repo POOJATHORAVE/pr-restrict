@@ -87,7 +87,8 @@ pipeline {
     failure { echo "Failed (check console and gitleaks-report.json)" }
   }
 }
-Jenkinsfile: fail PR builds when gitleaks finds secrets (Docker agent + runtime gitleaks install)
+Jenkinsfile: echo "Fail PR builds when gitleaks finds secrets (Docker agent + runtime gitleaks install)"
+
 // pipeline {
 //   agent {
 //     docker {
