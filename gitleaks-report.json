@@ -1,0 +1,48 @@
+[
+ {
+  "Description": "AWS Access Key ID",
+  "StartLine": 17,
+  "EndLine": 17,
+  "StartColumn": 8,
+  "EndColumn": 27,
+  "Match": "AKIAIOSFODNN7EXAMPLE",
+  "Secret": "AKIAIOSFODNN7EXAMPLE",
+  "File": "gitleaks.toml",
+  "SymlinkFile": "",
+  "Commit": "4898bdf7d1b5f40b9a623a2106e8177008b80440",
+  "Entropy": 3.6841838,
+  "Author": "copilot-swe-agent[bot]",
+  "Email": "198982749+Copilot@users.noreply.github.com",
+  "Date": "2025-11-21T18:22:40Z",
+  "Message": "Initial plan\n\ncommit f10ac50ed0c85d70ceb253de1b5690008ddf8e2f\nAuthor: “Poojathorave” \u003c“Pooja.thorave@centricsoftware.com”\u003e\nDate:   Thu Nov 20 15:43:28 2025 +0530\n\nadded jenkinsfile",
+  "Tags": [
+   "aws",
+   "secret"
+  ],
+  "RuleID": "aws-access-key",
+  "Fingerprint": "4898bdf7d1b5f40b9a623a2106e8177008b80440:gitleaks.toml:aws-access-key:17"
+ },
+ {
+  "Description": "AWS Access Key ID",
+  "StartLine": 2,
+  "EndLine": 2,
+  "StartColumn": 18,
+  "EndColumn": 37,
+  "Match": "AKIAIOSFODNN7EXAMPLE",
+  "Secret": "AKIAIOSFODNN7EXAMPLE",
+  "File": "secrets.yaml",
+  "SymlinkFile": "",
+  "Commit": "4898bdf7d1b5f40b9a623a2106e8177008b80440",
+  "Entropy": 3.6841838,
+  "Author": "copilot-swe-agent[bot]",
+  "Email": "198982749+Copilot@users.noreply.github.com",
+  "Date": "2025-11-21T18:22:40Z",
+  "Message": "Initial plan\n\ncommit f10ac50ed0c85d70ceb253de1b5690008ddf8e2f\nAuthor: “Poojathorave” \u003c“Pooja.thorave@centricsoftware.com”\u003e\nDate:   Thu Nov 20 15:43:28 2025 +0530\n\nadded jenkinsfile",
+  "Tags": [
+   "aws",
+   "secret"
+  ],
+  "RuleID": "aws-access-key",
+  "Fingerprint": "4898bdf7d1b5f40b9a623a2106e8177008b80440:secrets.yaml:aws-access-key:2"
+ }
+]
