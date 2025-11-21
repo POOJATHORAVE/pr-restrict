@@ -126,7 +126,7 @@ pipeline {
 //           python -m pip install --upgrade pip setuptools || true
 //           python -m pip install pytest
 //           GL_VER="8.18.4"
-//           curl -sL -o /tmp/gitleaks.tar.gz "https://github.com/zricethezav/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz"
+//           curl -sL -o /tmp/gitleaks.tar.gz "https://github.com/zricethezav/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x86_64.tar.gz"
 //           mkdir -p /usr/local/bin
 //           tar -xzf /tmp/gitleaks.tar.gz -C /tmp
 //           mv /tmp/gitleaks /usr/local/bin/gitleaks
