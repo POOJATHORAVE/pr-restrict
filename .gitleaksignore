@@ -1,0 +1,7 @@
+# .gitleaksignore - Ignore false positives
+
+# AWS example key used in gitleaks.toml rule description (AWS documentation example)
+gitleaks.toml:aws-access-key:17
+
+# Test secrets file with AWS example key (AWS documentation example)
+secrets.yaml:aws-access-key:2

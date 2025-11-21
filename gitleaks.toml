@@ -1,6 +1,12 @@
 # gitleaks.toml
 # Configuration file for Gitleaks v8.28.0
 
+[allowlist]
+  description = "Global allowlist"
+  paths = [
+    '''gitleaks-report\.json''',
+  ]
+
 [[rules]]
 id = "generic-secret"
 description = "Generic Secret (password, secret, API key)"

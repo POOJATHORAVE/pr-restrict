@@ -1,0 +1,19 @@
+# Gitleaks report files
+gitleaks-report.json
+
+# IDE and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Build artifacts
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+reports/
+
+# Temporary files
+*.tmp
+*.log
