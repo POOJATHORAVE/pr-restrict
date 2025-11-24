@@ -47,10 +47,10 @@ pipeline {
 
           if command -v gitleaks >/dev/null 2>&1; then
             echo "Running local gitleaks..."
-            gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 1
+            gitleaks detect --source . --config gitleaks.toml --report-format json --report-path gitleaks-report.json --exit-code 1
           elif command -v docker >/dev/null 2>&1; then
             echo "Running gitleaks via docker..."
-            docker run --rm -v "$PWD":/src zricethezav/gitleaks:8.8.3 detect --source /src --report-format json --report-path /src/gitleaks-report.json --exit-code 1
+            docker run --rm -v "$PWD":/src zricethezav/gitleaks:8.8.3 detect --source /src --config /src/gitleaks.toml --report-format json --report-path /src/gitleaks-report.json --exit-code 1
           else
             echo "ERROR: gitleaks binary or docker not available. Failing build to ensure secret-scanning is enforced."
             exit 2
