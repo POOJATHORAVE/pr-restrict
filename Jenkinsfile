@@ -70,6 +70,9 @@ pipeline {
         sh '''
           set -e
           pytest -q
+          if command -v pytest >/dev/null 2>&1; then
+            pytest -q
+          fi
           # package/publish commands go here
         '''
       }
@@ -86,6 +89,7 @@ pipeline {
     failure { echo "Failed (check console and gitleaks-report.json)" }
   }
 }
+
 
 
 // pipeline {
